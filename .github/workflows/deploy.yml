@@ -19,4 +19,4 @@ jobs:
 
       - name: Deploy application
         run: |
-          ssh -o StrictHostKeyChecking=no back@51.250.43.136 "cd /path/to/your/app && git pull origin main && docker-compose up --build -d"
+          ssh -o StrictHostKeyChecking=no back@51.250.43.136 "git pull origin main && docker-compose up --build -d"
