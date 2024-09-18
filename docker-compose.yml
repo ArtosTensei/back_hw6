@@ -1,0 +1,65 @@
+services:
+  gateway:
+    container_name: gateway
+    build:
+      context: ./gateway
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - service-auth
+      - service-market
+      - service-postgres
+    networks:
+      - app-network
+
+  service-auth:
+    container_name: service-auth
+    build:
+      context: ./auth
+    restart: always
+    expose:
+      - 5000
+    env_file:
+      - ./auth/.env
+    networks:
+      - app-network
+    depends_on:
+      - service-postgres
+
+  service-market:
+    container_name: service-market
+    build:
+      context: ./market
+    restart: always
+    expose:
+      - 8000
+    env_file:
+      - ./market/.env
+    networks:
+      - app-network
+    depends_on:
+      - service-postgres
+
+  service-postgres:
+    container_name: service-postgres
+    image: postgres:14
+    environment:
+      POSTGRES_DB: testing
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1122
+
+    expose:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
