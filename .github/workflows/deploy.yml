@@ -3,7 +3,7 @@ name: Deploy to Server
 on:
   push:
     branches:
-      - main  # Замените на имя ветки, на которую хотите настраивать деплой
+      - main
 
 jobs:
   deploy:
@@ -19,4 +19,4 @@ jobs:
 
       - name: Deploy application
         run: |
-          ssh -o StrictHostKeyChecking=no user@your-server-ip "cd /path/to/your/app && git pull origin main && docker-compose up -d"
+          ssh -o StrictHostKeyChecking=no back@51.250.43.136 "cd /path/to/your/app && git pull origin main && docker-compose up --build -d"
