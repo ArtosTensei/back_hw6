@@ -1,22 +1,25 @@
-name: Deploy
+name: Deploy Application
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+    - name: Set up SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan 90.156.219.37 >> ~/.ssh/known_hosts
 
-      - name: Deploy application
-        run: |
-          ssh -o StrictHostKeyChecking=no back@51.250.43.136 "git pull origin main && docker-compose up --build -d"
+    - name: Deploy application
+      run: |
+        ssh -i ~/.ssh/id_rsa ubuntu@90.156.219.37 "cd /path/to/your/app && git pull origin main && docker-compose up --build -d"
