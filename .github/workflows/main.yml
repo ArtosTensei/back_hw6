@@ -22,4 +22,4 @@ jobs:
 
     - name: Deploy application
       run: |
-        ssh -i ~/.ssh/id_rsa ubuntu@90.156.219.37 "cd /home/ubuntu/back_hw6 && git pull origin master && docker-compose up --build -d"
+        ssh -i ~/.ssh/id_rsa ubuntu@90.156.219.37 "cd /home/ubuntu/back_hw6 && git pull origin master && sudo docker-compose up --build -d"
